@@ -1,1 +1,1 @@
-ACTION=="change", SUBSYSTEM=="drm", ENV{HOTPLUG}=="1", RUN+="/usr/local/bin/monitor-hotplug.sh"
+KERNEL=="card0", ACTION=="change", RUN+="/opt/udev-monitor-hotplug/usr/local/bin/monitor-hotplug.sh"
