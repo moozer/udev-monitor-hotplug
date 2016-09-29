@@ -13,11 +13,13 @@ if echo $displaynum | grep " " > /dev/null; then
 	exit 1
 fi
 
-display=":${displaynum}.0"
-export DISPLAY="$display"
+display=":$displaynum.0"
+export DISPLAY=":$displaynum.0"
 
 logger "Using DISPLAY $DISPLAY"
 
+
+# we don't have "consolekit installed"
 #uid=$(ck-list-sessions | awk 'BEGIN { unix_user = ""; } /^Session/ { unix_user = ""; } /unix-user =/ { gsub(/'\''/,"",$3); unix_user = $3; } /x11-display = '\'$display\''/ { print unix_user; exit (0); }')
 #if [ -n "$uid" ]; then
 #	# from https://wiki.archlinux.org/index.php/Acpid#Laptop_Monitor_Power_Off
