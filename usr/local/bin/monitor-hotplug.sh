@@ -60,6 +60,12 @@ elif [ ! -z "$HDMI1" -a -z "$VGA1" ]; then
   xrandr --output LVDS1 --mode 1366x768 --noprimary
   xrandr --output VGA1 --off
   xrandr --output HDMI1 --auto --primary --left-of LVDS1
+elif [ ! -z "$HDMI2" -a -z "$VGA1" ]; then
+  echo "HDMI2 is plugged in, but not VGA1"
+  logger "HDMI2 is plugged in, but not VGA1"
+  xrandr --output LVDS1 --mode 1366x768 --noprimary
+  xrandr --output VGA1 --off
+  xrandr --output HDMI2 --auto --primary --left-of LVDS1
 elif [ -z "$HDMI1" -a ! -z "$VGA1" ]; then
   echo "VGA1 is plugged in, but not HDMI1"
   logger "VGA1 is plugged in, but not HDMI1"
