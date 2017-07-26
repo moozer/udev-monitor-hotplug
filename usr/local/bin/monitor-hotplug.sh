@@ -81,6 +81,13 @@ elif [ -z "$HDMI1" -a ! -z "$VGA1" ]; then
   xrandr --output LVDS1 --mode 1366x768 --noprimary
   xrandr --output HDMI1 --off
   xrandr --output VGA1 --auto --primary --left-of LVDS1
+elif [ ! -z "$DP3" ]; then
+  echo "DP3 is plugged in"
+  logger "DP3 is plugged in"
+  xrandr --output LVDS1 --mode 1366x768 --noprimary
+  xrandr --output HDMI1 --off
+  xrandr --output VGA1 --off
+  xrandr --output DP3 --auto --primary --left-of LVDS1
 else
   echo "No external monitors are plugged in"
   logger "No external monitors are plugged in"
