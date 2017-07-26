@@ -32,26 +32,27 @@ export XAUTHORITY=$(ps -C Xorg -f --no-header | sed -n 's/.*-auth //; s/ -[^ ].*
 
 
 #this while loop declare the $HDMI1 $VGA1 $LVDS1 and others if they are plugged in
-while read l 
-do 
-  dir=$(dirname $l); 
-  status=$(cat $l); 
-  dev=$(echo $dir | cut -d\- -f 2-); 
-  
+while read l
+do
+  dir=$(dirname $l);
+  status=$(cat $l);
+  dev=$(echo $dir | cut -d\- -f 2-);
+	echo "Found $dev"
+
   if [ $(expr match  $dev "HDMI") != "0" ]
   then
 #REMOVE THE -X- part from HDMI-X-n
     dev=HDMI${dev#HDMI-?-}
-  else 
+  else
     dev=$(echo $dev | tr -d '-')
   fi
 
   if [ "connected" == "$status" ]
-  then 
+  then
     echo $dev "connected"
     logger $dev "connected"
-    declare $dev="yes"; 
-  
+    declare $dev="yes";
+
   fi
 done <<< "$DEVICES"
 
@@ -60,39 +61,38 @@ if [ ! -z "$HDMI1" -a ! -z "$VGA1" ]
 then
   echo "HDMI1 and VGA1 are plugged in"
   loggger "HDMI1 and VGA1 are plugged in"
-  xrandr --output LVDS1 --mode 1366x768 --primary
-  xrandr --output VGA1  --auto --noprimary --right-of LVDS1
-  xrandr --output HDMI1 --auto --noprimary --left-of LVDS1 
+  xrandr --output LVDS-1 --mode 1366x768 --primary
+  xrandr --output  VGA-1  --auto --noprimary --right-of LVDS-1
+  xrandr --output HDMI-1 --auto --noprimary --left-of LVDS-1
 elif [ ! -z "$HDMI1" -a -z "$VGA1" ]; then
   echo "HDMI1 is plugged in, but not VGA1"
   logger "HDMI1 is plugged in, but not VGA1"
-  xrandr --output LVDS1 --mode 1366x768 --noprimary
-  xrandr --output VGA1 --off
-  xrandr --output HDMI1 --auto --primary --left-of LVDS1
+  xrandr --output LVDS-1 --mode 1366x768 --noprimary
+  xrandr --output  VGA-1 --off
+  xrandr --output HDMI-1 --auto --primary --left-of LVDS-1
 elif [ ! -z "$HDMI2" -a -z "$VGA1" ]; then
   echo "HDMI2 is plugged in, but not VGA1"
   logger "HDMI2 is plugged in, but not VGA1"
-  xrandr --output LVDS1 --mode 1366x768 --noprimary
-  xrandr --output VGA1 --off
-  xrandr --output HDMI2 --auto --primary --left-of LVDS1
+  xrandr --output LVDS-1 --mode 1366x768 --noprimary
+  xrandr --output  VGA-1 --off
+  xrandr --output HDMI-2 --auto --primary --left-of LVDS-1
 elif [ -z "$HDMI1" -a ! -z "$VGA1" ]; then
   echo "VGA1 is plugged in, but not HDMI1"
   logger "VGA1 is plugged in, but not HDMI1"
-  xrandr --output LVDS1 --mode 1366x768 --noprimary
-  xrandr --output HDMI1 --off
-  xrandr --output VGA1 --auto --primary --left-of LVDS1
+  xrandr --output LVDS-1 --mode 1366x768 --noprimary
+  xrandr --output HDMI-1 --off
+  xrandr --output  VGA-1 --auto --primary --left-of LVDS-1
 elif [ ! -z "$DP3" ]; then
   echo "DP3 is plugged in"
   logger "DP3 is plugged in"
-  xrandr --output LVDS1 --mode 1366x768 --noprimary
-  xrandr --output HDMI1 --off
-  xrandr --output VGA1 --off
-  xrandr --output DP3 --auto --primary --left-of LVDS1
+  xrandr --output LVDS-1 --mode 1366x768 --noprimary
+  xrandr --output HDMI-1 --off
+  xrandr --output  VGA-1 --off
+  xrandr --output   DP-3 --auto --primary --left-of LVDS-1
 else
   echo "No external monitors are plugged in"
   logger "No external monitors are plugged in"
-  xrandr --output VGA1 --off
-  xrandr --output HDMI1 --off
-  xrandr --output LVDS1 --mode 1366x768 --primary
+  xrandr --output  VGA-1 --off
+  xrandr --output HDMI-1 --off
+  xrandr --output LVDS-1 --mode 1366x768 --primary
 fi
-
